@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Operations - Direct Commerce & Logistics Hub (Client Showcase)</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --bg-canvas: #0D1117;
+      --bg-subtle: #161B22;
+      --bg-card: #161B22;
+      --border-color: #30363D;
+      --text-primary: #F0F6FC;
+      --text-secondary: #8B949E;
+      --accent-blue: #2563EB;
+    }
+    html.light {
+      --bg-canvas: #F8FAFC;
+      --bg-subtle: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --border-color: #E2E8F0;
+      --text-primary: #0F172A;
+      --text-secondary: #64748B;
+      --accent-blue: #1E40AF;
+    }
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      transition: background-color 0.2s ease;
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+  </style>
+</head>
+<body class="min-h-screen antialiased flex flex-col custom-scrollbar">
+
+  <!-- TOP BANNER: CLIENT PRESENTATION MODE -->
+  <div class="bg-slate-900 border-b border-slate-700/80 px-6 py-2 text-xs text-slate-300 flex items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+      <span class="font-semibold text-white">Client Showcase Preview</span>
+      <span class="text-slate-400">• Executive Operations &amp; Doorstep Logistics Platform</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <span class="text-slate-400 font-mono text-[11px]">Standalone Interactive Presentation</span>
+      <button onclick="toggleTheme()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 text-[11px]">
+        Toggle Light / Dark
+      </button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="border-b border-[var(--border-color)] bg-[var(--bg-subtle)] px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-slate-200">
+        AO
+      </div>
+      <div>
+        <h1 class="text-sm font-semibold tracking-tight text-[var(--text-primary)]">
+          Aura Operations
+        </h1>
+        <p class="text-[11px] text-[var(--text-secondary)]">Direct WhatsApp Commerce &bull; Doorstep Courier Logistics &bull; Financial Ledger</p>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-3">
+      <span class="px-2.5 py-1 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+        Doorstep Pickup: Active
+      </span>
+      <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-slate-900 border border-[var(--border-color)] rounded-lg px-2 py-1.5 text-xs text-slate-300">
+        <option value="INR" selected>₹ INR</option>
+        <option value="USD">$ USD</option>
+        <option value="EUR">€ EUR</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- SIDEBAR -->
+    <aside class="w-60 border-r border-[var(--border-color)] bg-[var(--bg-subtle)] p-4 flex flex-col justify-between shrink-0">
+      <nav class="space-y-1 text-xs">
+        <button onclick="switchTab('overview')" id="tab-btn-overview" class="w-full flex items-center space-x-3 px-3 py-2 font-medium rounded-lg text-slate-200 bg-slate-800 border border-slate-700">
+          Executive Overview
+        </button>
+        <button onclick="switchTab('orders')" id="tab-btn-orders" class="w-full flex items-center justify-between px-3 py-2 font-medium rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+          <span>WhatsApp Orders</span>
+          <span id="unfulfilledBadge" class="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] text-slate-300">2</span>
+        </button>
+        <button onclick="switchTab('logistics')" id="tab-btn-logistics" class="w-full flex items-center space-x-3 px-3 py-2 font-medium rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+          Doorstep Couriers
+        </button>
+        <button onclick="switchTab('payments')" id="tab-btn-payments" class="w-full flex items-center space-x-3 px-3 py-2 font-medium rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+          UPI &amp; Financial Ledger
+        </button>
+      </nav>
+      <div class="p-3 rounded-lg bg-slate-900/60 border border-[var(--border-color)] text-xs text-slate-400">
+        Pickup SLA: <b class="text-emerald-500">98.2%</b>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="flex-1 overflow-y-auto p-6 custom-scrollbar bg-[var(--bg-canvas)]">
+
+      <!-- TAB 1: OVERVIEW -->
+      <div id="tab-overview" class="tab-content space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+            <span class="text-xs font-medium text-[var(--text-secondary)]">Total Revenue</span>
+            <h3 id="statTotalRevenue" class="text-2xl font-bold text-[var(--text-primary)] mt-1">₹14,247.90</h3>
+            <p class="text-xs text-emerald-500 font-semibold mt-2">+18.2% vs last week</p>
+          </div>
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+            <span class="text-xs font-medium text-[var(--text-secondary)]">Active Orders</span>
+            <h3 id="statTotalOrders" class="text-2xl font-bold text-[var(--text-primary)] mt-1">5</h3>
+            <p class="text-xs text-amber-400 font-semibold mt-2"><span id="statUnfulfilled">2</span> Ready for pickup</p>
+          </div>
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+            <span class="text-xs font-medium text-[var(--text-secondary)]">In-Transit Parcels</span>
+            <h3 id="statInTransit" class="text-2xl font-bold text-[var(--text-primary)] mt-1">2</h3>
+            <p class="text-xs text-slate-400 mt-2">Delhivery &amp; Blue Dart</p>
+          </div>
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+            <span class="text-xs font-medium text-[var(--text-secondary)]">Refunds Reconciled</span>
+            <h3 id="statTotalRefunds" class="text-2xl font-bold text-[var(--text-primary)] mt-1">₹1,573.95</h3>
+            <p class="text-xs text-slate-400 mt-2">Processed via UPI</p>
+          </div>
+        </div>
+
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+          <h3 class="text-sm font-semibold text-[var(--text-primary)] mb-3">Orders Ready for Doorstep Courier Pickup</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/60 text-slate-400 border-b border-[var(--border-color)]">
+                <tr>
+                  <th class="py-2.5 px-3">Order #</th>
+                  <th class="py-2.5 px-3">Customer &amp; Phone</th>
+                  <th class="py-2.5 px-3">City</th>
+                  <th class="py-2.5 px-3">Amount</th>
+                  <th class="py-2.5 px-3">Payment</th>
+                  <th class="py-2.5 px-3 text-right">Logistics Action</th>
+                </tr>
+              </thead>
+              <tbody id="overviewActionTable" class="divide-y divide-[var(--border-color)]"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: ORDERS -->
+      <div id="tab-orders" class="tab-content hidden space-y-4">
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl shadow-sm overflow-hidden">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-900/60 text-slate-400 border-b border-[var(--border-color)]">
+              <tr>
+                <th class="py-3 px-3.5">Order #</th>
+                <th class="py-3 px-3.5">Customer</th>
+                <th class="py-3 px-3.5">Payment</th>
+                <th class="py-3 px-3.5">Fulfillment</th>
+                <th class="py-3 px-3.5">Courier &amp; Waybill (AWB)</th>
+                <th class="py-3 px-3.5">Total</th>
+                <th class="py-3 px-3.5 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody" class="divide-y divide-[var(--border-color)]"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: LOGISTICS -->
+      <div id="tab-logistics" class="tab-content hidden space-y-4">
+        <h2 class="text-sm font-semibold text-[var(--text-primary)]">Connected Doorstep Courier Partners</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="deliveryPartnersGrid"></div>
+      </div>
+
+      <!-- TAB 4: PAYMENTS -->
+      <div id="tab-payments" class="tab-content hidden space-y-4">
+        <h2 class="text-sm font-semibold text-[var(--text-primary)]">Transaction &amp; Settlement Ledger</h2>
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4">
+          <table class="w-full text-left text-xs">
+            <thead class="text-slate-400 border-b border-[var(--border-color)]">
+              <tr><th class="py-2 px-3">Ref ID</th><th class="py-2 px-3">Order #</th><th class="py-2 px-3">Customer</th><th class="py-2 px-3">Mode</th><th class="py-2 px-3">Amount</th></tr>
+            </thead>
+            <tbody id="transactionsTableBody" class="divide-y divide-[var(--border-color)]"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- BOOK PICKUP MODAL -->
+  <div id="bookPickupModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-xl w-full max-w-md p-6 text-xs space-y-3">
+      <h3 class="text-sm font-semibold text-white">Book Courier Doorstep Pickup</h3>
+      <p class="text-slate-400">Rider will arrive at your warehouse to collect the package.</p>
+      <div>
+        <label class="block text-slate-400 mb-1">Select Courier</label>
+        <select id="pickupPartnerSelect" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200">
+          <option>Shiprocket (Doorstep Collection - 1-3 Days)</option>
+          <option>Delhivery Direct (Surface &amp; Air - 2-4 Days)</option>
+          <option>Blue Dart Apex (Priority Air - 1-2 Days)</option>
+          <option>Porter / Borzo (Hyperlocal - Same Day)</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-slate-400 mb-1">Pickup Slot</label>
+        <select class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200">
+          <option>Today (2:00 PM - 5:00 PM)</option>
+          <option>Tomorrow Morning (10:00 AM - 1:00 PM)</option>
+        </select>
+      </div>
+      <div class="pt-3 border-t border-slate-800 flex justify-end space-x-2">
+        <button onclick="closeModal('bookPickupModal')" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded">Cancel</button>
+        <button onclick="confirmPickupMock()" class="px-3.5 py-1.5 bg-blue-700 text-white rounded font-medium">Confirm Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ORDERS = [
+      { id: "1", order_number: "#WA-2041", customer_name: "Pooja Hegde", customer_phone: "+91 98200 44551", shipping_city: "Mumbai", total: 3473.95, payment_gateway: "UPI (Google Pay)", fulfillment_status: "in_transit", delivery_partner_name: "Shiprocket (Blue Dart)", tracking_number: "SR-BLU-9948271049" },
+      { id: "2", order_number: "#WA-2042", customer_name: "Karthik Raja", customer_phone: "+91 97410 88219", shipping_city: "Bengaluru", total: 5248.95, payment_gateway: "UPI (PhonePe)", fulfillment_status: "out_for_delivery", delivery_partner_name: "Delhivery Direct", tracking_number: "DEL-BLR-44019283" },
+      { id: "3", order_number: "#WA-2043", customer_name: "Ananya Sen", customer_phone: "+91 98300 12948", shipping_city: "Kolkata", total: 2525.00, payment_gateway: "Cash on Delivery", fulfillment_status: "unfulfilled", delivery_partner_name: null, tracking_number: null },
+      { id: "4", order_number: "#WA-2044", customer_name: "Vikramaditya Rao", customer_phone: "+91 99890 33441", shipping_city: "Hyderabad", total: 3043.95, payment_gateway: "UPI (Paytm)", fulfillment_status: "unfulfilled", delivery_partner_name: null, tracking_number: null },
+      { id: "5", order_number: "#WA-2045", customer_name: "Rohan Deshmukh", customer_phone: "+91 98500 77112", shipping_city: "Pune", total: 1573.95, payment_gateway: "UPI (Google Pay)", fulfillment_status: "refunded", delivery_partner_name: "Delhivery", tracking_number: "DEL-PUN-992011" }
+    ];
+
+    const PARTNERS = [
+      { name: "Shiprocket Aggregator", service: "Doorstep Collection", days: "1-3 Days", rating: "4.9" },
+      { name: "Delhivery Direct", service: "Surface & Air", days: "2-4 Days", rating: "4.8" },
+      { name: "Blue Dart Apex", service: "Priority Air", days: "1-2 Days", rating: "4.9" },
+      { name: "Porter Hyperlocal", service: "Same-Day Delivery", days: "Same Day", rating: "4.95" }
+    ];
+
+    let currentCurrency = '₹';
+    let currentSelectedId = null;
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle('light');
+    }
+
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+    }
+
+    function formatMoney(amount) {
+      return `${currentCurrency}${Number(amount || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+    }
+
+    function changeCurrency(val) {
+      if (val === 'INR') currentCurrency = '₹';
+      else if (val === 'USD') currentCurrency = '$';
+      else if (val === 'EUR') currentCurrency = '€';
+      render();
+    }
+
+    function promptBookPickup(id) {
+      currentSelectedId = id;
+      openModal('bookPickupModal');
+    }
+
+    function confirmPickupMock() {
+      const order = ORDERS.find(o => o.id === currentSelectedId);
+      if (order) {
+        order.fulfillment_status = "in_transit";
+        order.delivery_partner_name = "Shiprocket (Doorstep Pickup)";
+        order.tracking_number = `SR-AWB-${Math.floor(1000000000 + Math.random() * 9000000000)}`;
+      }
+      closeModal('bookPickupModal');
+      render();
+      alert('Courier Doorstep Pickup successfully booked!');
+    }
+
+    function render() {
+      // Action Table
+      const actBody = document.getElementById('overviewActionTable');
+      actBody.innerHTML = '';
+      ORDERS.filter(o => o.fulfillment_status === 'unfulfilled').forEach(o => {
+        actBody.innerHTML += `
+          <tr class="hover:bg-slate-800/30">
+            <td class="py-2.5 px-3 font-mono text-blue-400 font-semibold">${o.order_number}</td>
+            <td class="py-2.5 px-3 text-slate-200">${o.customer_name} (${o.customer_phone})</td>
+            <td class="py-2.5 px-3 text-slate-300">${o.shipping_city}</td>
+            <td class="py-2.5 px-3 font-medium text-slate-100">${formatMoney(o.total)}</td>
+            <td class="py-2.5 px-3 text-slate-300">${o.payment_gateway}</td>
+            <td class="py-2.5 px-3 text-right">
+              <button onclick="promptBookPickup('${o.id}')" class="px-2.5 py-1 bg-blue-700 hover:bg-blue-600 text-white rounded text-xs font-medium">
+                Book Pickup
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+
+      // Orders Table
+      const ordBody = document.getElementById('ordersTableBody');
+      ordBody.innerHTML = '';
+      ORDERS.forEach(o => {
+        const isUnful = o.fulfillment_status === 'unfulfilled';
+        ordBody.innerHTML += `
+          <tr class="hover:bg-slate-800/40">
+            <td class="py-3 px-3.5 font-mono text-blue-400 font-semibold">${o.order_number}</td>
+            <td class="py-3 px-3.5 text-slate-200">${o.customer_name}<div class="text-[11px] text-slate-400 font-mono">${o.customer_phone}</div></td>
+            <td class="py-3 px-3.5 text-slate-300">${o.payment_gateway}</td>
+            <td class="py-3 px-3.5">
+              <span class="px-2 py-0.5 rounded text-[10px] font-medium ${isUnful ? 'bg-amber-950/60 text-amber-300 border border-amber-800/40' : 'bg-slate-800 text-slate-200'}">
+                ${o.fulfillment_status.toUpperCase()}
+              </span>
+            </td>
+            <td class="py-3 px-3.5 text-slate-200">${o.delivery_partner_name ? `${o.delivery_partner_name}<br><span class="font-mono text-slate-400 text-[11px]">${o.tracking_number}</span>` : '<span class="text-amber-400">Pickup Not Scheduled</span>'}</td>
+            <td class="py-3 px-3.5 font-medium text-slate-100">${formatMoney(o.total)}</td>
+            <td class="py-3 px-3.5 text-right">
+              ${isUnful ? `
+                <button onclick="promptBookPickup('${o.id}')" class="px-2.5 py-1 bg-blue-700 text-white rounded text-xs font-medium">
+                  Book Pickup
+                </button>
+              ` : `
+                <span class="text-emerald-500 font-medium">Dispatched</span>
+              `}
+            </td>
+          </tr>
+        `;
+      });
+
+      // Partners Grid
+      const pGrid = document.getElementById('deliveryPartnersGrid');
+      pGrid.innerHTML = '';
+      PARTNERS.forEach(p => {
+        pGrid.innerHTML += `
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4 shadow-sm text-xs space-y-1.5">
+            <div class="flex justify-between items-center"><h4 class="font-semibold text-slate-200">${p.name}</h4><span class="text-slate-300 font-medium">${p.rating} ★</span></div>
+            <p class="text-slate-400">${p.service} &bull; ${p.days}</p>
+          </div>
+        `;
+      });
+
+      // Transactions
+      const txBody = document.getElementById('transactionsTableBody');
+      txBody.innerHTML = '';
+      ORDERS.forEach((o, i) => {
+        txBody.innerHTML += `
+          <tr class="hover:bg-slate-800/30">
+            <td class="py-2 px-3 font-mono text-slate-400">TXN-00${i+1}</td>
+            <td class="py-2 px-3 font-mono text-blue-400">${o.order_number}</td>
+            <td class="py-2 px-3 text-slate-200">${o.customer_name}</td>
+            <td class="py-2 px-3 text-slate-300">${o.payment_gateway}</td>
+            <td class="py-2 px-3 font-semibold text-slate-100">${formatMoney(o.total)}</td>
+          </tr>
+        `;
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Operations - Direct Commerce & Logistics Hub</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* EXECUTIVE ENTERPRISE THEME SYSTEM */
+    :root {
+      --bg-canvas: #0D1117;
+      --bg-subtle: #161B22;
+      --bg-card: #161B22;
+      --border-color: #30363D;
+      --text-primary: #F0F6FC;
+      --text-secondary: #8B949E;
+      --accent-blue: #2563EB;
+      --accent-hover: #1D4ED8;
+      --badge-neutral: #21262D;
+    }
+    html.light {
+      --bg-canvas: #F8FAFC;
+      --bg-subtle: #FFFFFF;
+      --bg-card: #FFFFFF;
+      --border-color: #E2E8F0;
+      --text-primary: #0F172A;
+      --text-secondary: #64748B;
+      --accent-blue: #1E40AF;
+      --accent-hover: #1E3A8A;
+      --badge-neutral: #F1F5F9;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 3px;
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #printableSlip, #printableSlip * { visibility: visible; }
+      #printableSlip { position: absolute; left: 0; top: 0; width: 100%; color: #000; }
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased flex flex-col custom-scrollbar">
+
+  <!-- CLIENT DEMO NOTICE (Visible in Client View Mode) -->
+  <div id="clientBanner" class="hidden bg-slate-900 border-b border-slate-700/80 px-6 py-2 text-xs text-slate-300 flex items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+      <span class="font-semibold text-white">Client Showcase Preview</span>
+      <span class="text-slate-400">• Executive Operations &amp; Doorstep Logistics Platform</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <span class="text-slate-400 font-mono text-[11px]">Mode: Interactive Client Review</span>
+      <button onclick="toggleTheme()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 text-[11px]">
+        Toggle Light / Dark
+      </button>
+    </div>
+  </div>
+
+  <!-- TOP APP BAR -->
+  <header class="border-b border-[var(--border-color)] bg-[var(--bg-subtle)] sticky top-0 z-40 px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-slate-200">
+          AO
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-sm font-semibold tracking-tight text-[var(--text-primary)]">
+              Aura Operations
+            </h1>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-300 border border-slate-700">
+              Direct Commerce &amp; Logistics
+            </span>
+          </div>
+          <p class="text-[11px] text-[var(--text-secondary)]">WhatsApp Intake &bull; Doorstep Couriers &bull; Financial Ledger</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Search -->
+    <div class="hidden md:flex items-center relative w-72">
+      <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+      <input type="text" id="globalSearchInput" oninput="handleSearch(this.value)" placeholder="Search order #, customer, phone..." 
+        class="w-full bg-slate-900/60 dark:bg-slate-950 border border-[var(--border-color)] rounded-lg pl-8 pr-3 py-1.5 text-xs text-[var(--text-primary)] placeholder-slate-500 focus:outline-none focus:border-blue-500">
+    </div>
+
+    <!-- Right Header Actions -->
+    <div class="flex items-center space-x-2.5">
+      <!-- One-time Shareable Client Link Generator -->
+      <button onclick="openModal('shareModal')" class="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg border border-slate-700 transition">
+        <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+        <span>Client View Link</span>
+      </button>
+
+      <!-- Quick WhatsApp Paste Order -->
+      <button onclick="openModal('whatsappIntakeModal')" class="flex items-center space-x-1.5 px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white text-xs font-medium rounded-lg shadow-sm transition">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>+ Log WhatsApp Order</span>
+      </button>
+
+      <!-- Currency switch -->
+      <select id="currencySelector" onchange="changeCurrency(this.value)" class="bg-slate-900 border border-[var(--border-color)] rounded-lg px-2 py-1.5 text-xs text-slate-300 focus:outline-none">
+        <option value="INR" selected>₹ INR</option>
+        <option value="USD">$ USD</option>
+        <option value="EUR">€ EUR</option>
+        <option value="GBP">£ GBP</option>
+      </select>
+
+      <!-- Theme Switcher -->
+      <button onclick="toggleTheme()" title="Toggle Theme" class="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- SIDEBAR -->
+    <aside class="w-60 border-r border-[var(--border-color)] bg-[var(--bg-subtle)] p-4 flex flex-col justify-between shrink-0">
+      <div class="space-y-6">
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 px-3 mb-2">Operations</p>
+          <nav class="space-y-1">
+            <button onclick="switchTab('overview')" id="tab-btn-overview" class="w-full flex items-center space-x-3 px-3 py-2 text-xs font-medium rounded-lg text-slate-200 bg-slate-800 border border-slate-700 transition">
+              <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+              </svg>
+              <span>Executive Overview</span>
+            </button>
+
+            <button onclick="switchTab('orders')" id="tab-btn-orders" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+              <div class="flex items-center space-x-3">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <span>WhatsApp Orders</span>
+              </div>
+              <span id="unfulfilledBadge" class="px-1.5 py-0.5 text-[10px] font-semibold bg-slate-800 text-slate-300 rounded border border-slate-700">2</span>
+            </button>
+
+            <button onclick="switchTab('logistics')" id="tab-btn-logistics" class="w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+              <div class="flex items-center space-x-3">
+                <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0" />
+                </svg>
+                <span>Doorstep Couriers</span>
+              </div>
+              <span id="inTransitBadge" class="px-1.5 py-0.5 text-[10px] font-semibold bg-slate-800 text-slate-300 rounded border border-slate-700">2</span>
+            </button>
+
+            <button onclick="switchTab('payments')" id="tab-btn-payments" class="w-full flex items-center space-x-3 px-3 py-2 text-xs font-medium rounded-lg text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+              <span>UPI &amp; Financial Ledger</span>
+            </button>
+
+            <button onclick="switchTab('discounts')" id="tab-btn-discounts" class="w-full flex items-center space-x-3 px-3 py-2 text-xs font-medium rounded-lg text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+              <span>Promotions &amp; Codes</span>
+            </button>
+          </nav>
+        </div>
+
+        <div>
+          <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 px-3 mb-2">Management</p>
+          <nav class="space-y-1">
+            <button onclick="switchTab('settings')" id="tab-btn-settings" class="w-full flex items-center space-x-3 px-3 py-2 text-xs font-medium rounded-lg text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Pickup Warehouse</span>
+            </button>
+            <button onclick="exportOrdersCSV()" class="w-full flex items-center space-x-3 px-3 py-2 text-xs font-medium rounded-lg text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition">
+              <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span>Export CSV</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Logistics Partner Summary -->
+      <div class="pt-4 border-t border-[var(--border-color)]">
+        <div class="p-3 rounded-lg bg-slate-900/60 border border-[var(--border-color)] text-xs space-y-1">
+          <p class="font-semibold text-slate-300">Carrier Integration</p>
+          <p class="text-[11px] text-slate-400">Shiprocket, Delhivery, Blue Dart &amp; Porter Doorstep Pickup active.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENT VIEW CONTAINER -->
+    <main class="flex-1 overflow-y-auto p-6 custom-scrollbar bg-[var(--bg-canvas)]">
+
+      <!-- ========================================== -->
+      <!-- TAB 1: EXECUTIVE OVERVIEW -->
+      <!-- ========================================== -->
+      <div id="tab-overview" class="tab-content space-y-6">
+        <!-- Executive KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+            <span class="text-xs font-medium text-[var(--text-secondary)]">Total Revenue</span>
+            <h3 id="statTotalRevenue" class="text-2xl font-bold text-[var(--text-primary)] mt-1 tracking-tight">₹14,247.90</h3>
+            <div class="mt-2 text-xs text-slate-400">
+              <span class="text-emerald-500 font-semibold">+18.2%</span> vs last week
+            </div>
+          </div>
+
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+            <span class="text-xs font-medium text-[var(--text-secondary)]">Active Orders</span>
+            <h3 id="statTotalOrders" class="text-2xl font-bold text-[var(--text-primary)] mt-1 tracking-tight">5</h3>
+            <div class="mt-2 text-xs text-slate-400">
+              <span id="statUnfulfilled" class="text-amber-400 font-semibold">2</span> Pending pickup booking
+            </div>
+          </div>
+
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+            <span class="text-xs font-medium text-[var(--text-secondary)]">In-Transit Parcels</span>
+            <h3 id="statInTransit" class="text-2xl font-bold text-[var(--text-primary)] mt-1 tracking-tight">2</h3>
+            <div class="mt-2 text-xs text-slate-400">
+              Across Delhivery &amp; Blue Dart
+            </div>
+          </div>
+
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+            <span class="text-xs font-medium text-[var(--text-secondary)]">Refunds Processed</span>
+            <h3 id="statTotalRefunds" class="text-2xl font-bold text-[var(--text-primary)] mt-1 tracking-tight">₹1,573.95</h3>
+            <div class="mt-2 text-xs text-slate-400">
+              Reconciled via UPI
+            </div>
+          </div>
+        </div>
+
+        <!-- Priority Orders: Needing Courier Pickup -->
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div>
+              <h3 class="text-sm font-semibold text-[var(--text-primary)]">Orders Pending Doorstep Pickup</h3>
+              <p class="text-xs text-[var(--text-secondary)]">Assign couriers to generate waybills and schedule collection</p>
+            </div>
+            <button onclick="switchTab('orders')" class="text-xs text-blue-500 hover:text-blue-400 font-medium">View all orders &rarr;</button>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/60 text-slate-400 border-b border-[var(--border-color)] font-medium">
+                <tr>
+                  <th class="py-2.5 px-3">Order #</th>
+                  <th class="py-2.5 px-3">Customer</th>
+                  <th class="py-2.5 px-3">Destination</th>
+                  <th class="py-2.5 px-3">Amount</th>
+                  <th class="py-2.5 px-3">Payment</th>
+                  <th class="py-2.5 px-3 text-right">Logistics Action</th>
+                </tr>
+              </thead>
+              <tbody id="overviewActionTable" class="divide-y divide-[var(--border-color)]"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Trend Chart & Courier Performance -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <h3 class="text-sm font-semibold text-[var(--text-primary)]">Order Velocity &amp; Settlement</h3>
+                <p class="text-xs text-[var(--text-secondary)]">Daily volume and dispatch cadence</p>
+              </div>
+            </div>
+            <div class="w-full h-44 pt-1">
+              <svg class="w-full h-full" viewBox="0 0 700 140" preserveAspectRatio="none">
+                <line x1="0" y1="20" x2="700" y2="20" stroke="#334155" stroke-dasharray="2 2" stroke-opacity="0.4"/>
+                <line x1="0" y1="70" x2="700" y2="70" stroke="#334155" stroke-dasharray="2 2" stroke-opacity="0.4"/>
+                <line x1="0" y1="120" x2="700" y2="120" stroke="#334155" stroke-opacity="0.6"/>
+                <polyline points="20,110 110,95 210,100 310,55 420,65 530,30 660,20" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="530" cy="30" r="4" fill="#2563EB"/>
+                <circle cx="660" cy="20" r="4" fill="#3B82F6"/>
+                <text x="20" y="136" fill="#64748B" font-size="11" text-anchor="middle">Mon</text>
+                <text x="110" y="136" fill="#64748B" font-size="11" text-anchor="middle">Tue</text>
+                <text x="210" y="136" fill="#64748B" font-size="11" text-anchor="middle">Wed</text>
+                <text x="310" y="136" fill="#64748B" font-size="11" text-anchor="middle">Thu</text>
+                <text x="420" y="136" fill="#64748B" font-size="11" text-anchor="middle">Fri</text>
+                <text x="530" y="136" fill="#64748B" font-size="11" text-anchor="middle">Sat</text>
+                <text x="660" y="136" fill="#64748B" font-size="11" text-anchor="middle">Today</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-semibold text-[var(--text-primary)] mb-1">Carrier Network</h3>
+              <p class="text-xs text-[var(--text-secondary)] mb-4">Doorstep pickup &amp; delivery times</p>
+              <div id="overviewPartnersList" class="space-y-3"></div>
+            </div>
+            <div class="pt-3 border-t border-[var(--border-color)] text-xs text-slate-400">
+              Doorstep pickup SLA: <span class="text-emerald-500 font-semibold">98.2%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 2: WHATSAPP ORDERS -->
+      <!-- ========================================== -->
+      <div id="tab-orders" class="tab-content hidden space-y-4">
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-3.5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-1.5" id="orderFilterButtons">
+            <button onclick="filterOrders('all')" class="order-filter-btn px-3 py-1.5 text-xs rounded-lg font-medium bg-slate-800 text-white border border-slate-700" data-status="all">All Orders</button>
+            <button onclick="filterOrders('unfulfilled')" class="order-filter-btn px-3 py-1.5 text-xs rounded-lg font-medium bg-transparent text-slate-400 hover:text-white" data-status="unfulfilled">Need Pickup</button>
+            <button onclick="filterOrders('in_transit')" class="order-filter-btn px-3 py-1.5 text-xs rounded-lg font-medium bg-transparent text-slate-400 hover:text-white" data-status="in_transit">In Transit</button>
+            <button onclick="filterOrders('delivered')" class="order-filter-btn px-3 py-1.5 text-xs rounded-lg font-medium bg-transparent text-slate-400 hover:text-white" data-status="delivered">Delivered</button>
+            <button onclick="filterOrders('refunded')" class="order-filter-btn px-3 py-1.5 text-xs rounded-lg font-medium bg-transparent text-slate-400 hover:text-white" data-status="refunded">Refunded</button>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="openModal('whatsappIntakeModal')" class="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white text-xs font-medium rounded-lg">
+              + New Order
+            </button>
+            <button onclick="exportOrdersCSV()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg border border-slate-700">
+              Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/60 text-slate-400 border-b border-[var(--border-color)] font-medium">
+                <tr>
+                  <th class="py-3 px-3.5">Order #</th>
+                  <th class="py-3 px-3.5">Customer &amp; Phone</th>
+                  <th class="py-3 px-3.5">Items</th>
+                  <th class="py-3 px-3.5">Payment</th>
+                  <th class="py-3 px-3.5">Fulfillment Status</th>
+                  <th class="py-3 px-3.5">Courier &amp; Waybill (AWB)</th>
+                  <th class="py-3 px-3.5">Total</th>
+                  <th class="py-3 px-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody" class="divide-y divide-[var(--border-color)]"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 3: COURIERS & DOORSTEP PICKUP -->
+      <!-- ========================================== -->
+      <div id="tab-logistics" class="tab-content hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-semibold text-[var(--text-primary)]">Configured Delivery Partners</h2>
+            <p class="text-xs text-[var(--text-secondary)]">Integrated services that collect parcels directly from your doorstep</p>
+          </div>
+          <button onclick="openModal('addPartnerModal')" class="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white text-xs font-medium rounded-lg">
+            + Add Courier Partner
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="deliveryPartnersGrid"></div>
+
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+          <h3 class="text-sm font-semibold text-[var(--text-primary)] mb-1">Live Parcels In-Transit</h3>
+          <p class="text-xs text-[var(--text-secondary)] mb-4">Milestone checkpoints reported by carriers</p>
+          <div class="space-y-3" id="activeShipmentsList"></div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 4: PAYMENTS & REFUNDS -->
+      <!-- ========================================== -->
+      <div id="tab-payments" class="tab-content hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-sm font-semibold text-[var(--text-primary)]">Payment Options &amp; Ledger</h2>
+            <p class="text-xs text-[var(--text-secondary)]">UPI verification, Cash on Delivery tracking, and refund processing</p>
+          </div>
+          <button onclick="openRefundModalForSelection()" class="px-3 py-1.5 bg-rose-700 hover:bg-rose-600 text-white text-xs font-medium rounded-lg">
+            Initiate Refund
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="paymentMethodsGrid"></div>
+
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-semibold text-[var(--text-primary)]">Transaction &amp; Settlement Ledger</h3>
+            <span class="text-xs text-slate-400 font-mono" id="txCountDisplay">0 entries</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-900/60 text-slate-400 border-b border-[var(--border-color)] font-medium">
+                <tr>
+                  <th class="py-2.5 px-3">Ref ID</th>
+                  <th class="py-2.5 px-3">Order #</th>
+                  <th class="py-2.5 px-3">Customer</th>
+                  <th class="py-2.5 px-3">Type</th>
+                  <th class="py-2.5 px-3">Mode</th>
+                  <th class="py-2.5 px-3">Amount</th>
+                  <th class="py-2.5 px-3">Details</th>
+                  <th class="py-2.5 px-3">Date</th>
+                </tr>
+              </thead>
+              <tbody id="transactionsTableBody" class="divide-y divide-[var(--border-color)]"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 5: DISCOUNTS -->
+      <!-- ========================================== -->
+      <div id="tab-discounts" class="tab-content hidden space-y-6">
+        <h2 class="text-sm font-semibold text-[var(--text-primary)]">Promotional Discounts &amp; Coupons</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="discountsGrid"></div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 6: SETTINGS -->
+      <!-- ========================================== -->
+      <div id="tab-settings" class="tab-content hidden space-y-6">
+        <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-6 max-w-2xl shadow-sm text-xs space-y-4">
+          <h2 class="text-sm font-semibold text-[var(--text-primary)]">Merchant Pickup Location</h2>
+          <p class="text-slate-400">This address is communicated to Delhivery, Blue Dart, and Shiprocket for package pickup.</p>
+          <div class="p-4 rounded-lg bg-slate-900/60 border border-[var(--border-color)] space-y-2">
+            <p><span class="text-slate-400">Store Name:</span> <b class="text-slate-200">Aura Lifestyle &amp; Boutique</b></p>
+            <p><span class="text-slate-400">WhatsApp Contact:</span> <b class="text-slate-200">+91 98765 43210</b></p>
+            <p><span class="text-slate-400">Pickup Address:</span> <b class="text-slate-200">Plot 18, Commercial Hub, Sector 44, Gurugram, Haryana 122003</b></p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: CLIENT LINK SHARE GENERATOR -->
+  <!-- ========================================== -->
+  <div id="shareModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-xl w-full max-w-lg p-6 shadow-2xl text-xs space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-semibold text-white">Share Client Presentation View</h3>
+        <button onclick="closeModal('shareModal')" class="text-slate-400 hover:text-white">&times;</button>
+      </div>
+
+      <p class="text-slate-300">
+        You can share this live dashboard with your client in two simple ways:
+      </p>
+
+      <!-- Option 1: Live Link -->
+      <div class="p-3.5 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+        <p class="font-semibold text-blue-400">Option 1: Live Presentation Link (Local / Shared Network)</p>
+        <div class="flex items-center space-x-2">
+          <input type="text" id="shareableLinkInput" readonly value="http://localhost:8080/client-view?access_key=aura-client-preview-9821" 
+            class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-slate-200 font-mono text-[11px]">
+          <button onclick="copyClientLink()" class="px-3 py-1.5 bg-blue-700 hover:bg-blue-600 text-white font-medium rounded whitespace-nowrap">
+            Copy Link
+          </button>
+        </div>
+        <p class="text-[11px] text-slate-400">Opens directly in client presentation mode with light/dark theme toggle.</p>
+      </div>
+
+      <!-- Option 2: Standalone File to Send via WhatsApp or Email -->
+      <div class="p-3.5 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+        <p class="font-semibold text-emerald-400">Option 2: Standalone Showcase File (For WhatsApp / Email)</p>
+        <p class="text-[11px] text-slate-300 leading-relaxed">
+          You can also send the standalone presentation file <b>`Aura_Client_Showcase.html`</b> directly to your client via WhatsApp or Email. They can double-click and open it on any computer or phone with zero setup!
+        </p>
+        <button onclick="downloadClientHtml()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded border border-slate-700">
+          Save / Download Client Demo File
+        </button>
+      </div>
+
+      <div class="pt-2 border-t border-slate-800 flex justify-end">
+        <button onclick="closeModal('shareModal')" class="px-4 py-1.5 bg-slate-800 text-slate-200 rounded">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: QUICK WHATSAPP INTAKE -->
+  <div id="whatsappIntakeModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-xl w-full max-w-lg p-6 shadow-2xl text-xs space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-semibold text-white">Log WhatsApp Customer Order</h3>
+        <button onclick="closeModal('whatsappIntakeModal')" class="text-slate-400 hover:text-white">&times;</button>
+      </div>
+      <form onsubmit="handleWhatsappIntakeSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-slate-400 mb-1">Paste WhatsApp Text (Optional auto-fill)</label>
+          <textarea id="waRawInput" rows="2" placeholder="e.g. Please send 1 Aura Studio Headphones to Ankit Sharma, 204 Silver Tower, Bangalore 560038. Ph: 9876543210. GPay paid." class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-200"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">Customer Name</label>
+            <input type="text" id="waNameInput" placeholder="Ankit Sharma" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-200">
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Phone</label>
+            <input type="text" id="waPhoneInput" placeholder="+91 98765 43210" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-200">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">Product</label>
+            <select id="waProductSelect" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-200">
+              <option value="4999.00">Aura Studio Headphones (₹4,999)</option>
+              <option value="3499.00">Handcrafted Silk Kurta (₹3,499)</option>
+              <option value="2899.00">Titanium Chrono Watch (₹2,899)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Payment Mode</label>
+            <select id="waPaymentMode" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-200">
+              <option value="UPI (Google Pay)">Prepaid via UPI (GPay/PhonePe)</option>
+              <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+            </select>
+          </div>
+        </div>
+        <div class="pt-3 border-t border-slate-800 flex justify-end space-x-2">
+          <button type="button" onclick="closeModal('whatsappIntakeModal')" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded">Cancel</button>
+          <button type="submit" class="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-600 text-white font-medium rounded">Save Order &amp; Prepare Pickup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: BOOK COURIER PICKUP -->
+  <div id="bookPickupModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-xl w-full max-w-md p-6 shadow-2xl text-xs space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-semibold text-white">Book Courier Doorstep Pickup</h3>
+        <button onclick="closeModal('bookPickupModal')" class="text-slate-400 hover:text-white">&times;</button>
+      </div>
+      <form onsubmit="handleBookPickupSubmit(event)" class="space-y-3">
+        <input type="hidden" id="pickupOrderId">
+        <div class="p-2.5 rounded bg-slate-950 border border-slate-800 space-y-1 text-[11px]">
+          <p><span class="text-slate-400">Order:</span> <b id="pickupOrderNum" class="text-blue-400 font-mono">-</b></p>
+          <p><span class="text-slate-400">Customer:</span> <b id="pickupCustName" class="text-white">-</b></p>
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">Courier Partner</label>
+          <select id="pickupPartnerSelect" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200"></select>
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">Rider Pickup Window</label>
+          <select id="pickupSlotSelect" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200">
+            <option value="Today (2:00 PM - 5:00 PM)">Today (2:00 PM - 5:00 PM)</option>
+            <option value="Tomorrow (10:00 AM - 1:00 PM)">Tomorrow (10:00 AM - 1:00 PM)</option>
+            <option value="Same-Day 2-Hour (Porter)">Immediate 2-Hour (Porter)</option>
+          </select>
+        </div>
+        <div class="pt-3 border-t border-slate-800 flex justify-end space-x-2">
+          <button type="button" onclick="closeModal('bookPickupModal')" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded">Cancel</button>
+          <button type="submit" class="px-3.5 py-1.5 bg-blue-700 hover:bg-blue-600 text-white font-medium rounded">Confirm Pickup Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ORDER DETAILS -->
+  <div id="orderDetailModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-xl w-full max-w-xl max-h-[90vh] flex flex-col shadow-2xl text-xs overflow-hidden">
+      <div class="p-4 border-b border-slate-800 flex justify-between bg-slate-950">
+        <div>
+          <h3 id="modalOrderNumber" class="text-sm font-semibold text-white">#WA-2041</h3>
+          <p id="modalOrderDate" class="text-slate-400">Order Details</p>
+        </div>
+        <button onclick="closeModal('orderDetailModal')" class="text-slate-400 hover:text-white">&times;</button>
+      </div>
+      <div class="p-5 overflow-y-auto space-y-4">
+        <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
+          <div>
+            <p class="text-slate-400">Customer Phone</p>
+            <p id="modalWaPhoneDisplay" class="font-mono text-slate-200 font-semibold">+91 98200 44551</p>
+          </div>
+          <a id="modalDirectWaLink" href="#" target="_blank" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700">
+            Open in WhatsApp &rarr;
+          </a>
+        </div>
+        <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+          <p><span class="text-slate-400">Customer Name:</span> <b id="modalCustomerName" class="text-slate-200">-</b></p>
+          <p><span class="text-slate-400">Address:</span> <b id="modalCustomerAddress" class="text-slate-200">-</b></p>
+          <p><span class="text-slate-400">Total Amount:</span> <b id="modalTotal" class="text-blue-400">₹0.00</b></p>
+          <p><span class="text-slate-400">Courier Partner:</span> <b id="modalCarrierName" class="text-slate-200">-</b></p>
+          <p><span class="text-slate-400">Waybill (AWB):</span> <b id="modalTrackingNumber" class="font-mono text-slate-200">-</b></p>
+          <p><span class="text-slate-400">Estimated Delivery:</span> <b id="modalEstimatedDelivery" class="text-emerald-400">-</b></p>
+        </div>
+        <div id="modalCarrierActionButtons"></div>
+      </div>
+      <div class="p-3.5 bg-slate-950 border-t border-slate-800 flex justify-between">
+        <button onclick="promptRefundFromOrder()" class="px-3 py-1 bg-rose-950 hover:bg-rose-900 text-rose-300 rounded border border-rose-800">
+          Initiate Refund
+        </button>
+        <button onclick="closeModal('orderDetailModal')" class="px-3.5 py-1 bg-slate-800 text-slate-200 rounded">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: REFUND -->
+  <div id="refundModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-xl w-full max-w-md p-6 shadow-2xl text-xs space-y-3">
+      <h3 class="text-sm font-semibold text-white">Process Customer Refund</h3>
+      <form onsubmit="handleRefundSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-slate-400 mb-1">Select Order</label>
+          <select id="refundOrderSelect" onchange="updateRefundOrderPreview(this.value)" required class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200"></select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-slate-400 mb-1">Type</label>
+            <select id="refundTypeSelect" onchange="toggleRefundAmountInput(this.value)" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200">
+              <option value="full">Full Refund</option>
+              <option value="partial">Partial Custom</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-slate-400 mb-1">Amount</label>
+            <input type="number" step="0.01" id="refundAmountInput" disabled required class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200">
+          </div>
+        </div>
+        <div>
+          <label class="block text-slate-400 mb-1">Reason</label>
+          <select id="refundReasonSelect" class="w-full bg-slate-950 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200">
+            <option value="Customer canceled on WhatsApp">Customer canceled on WhatsApp</option>
+            <option value="Item defective or damaged">Item defective or damaged</option>
+            <option value="Courier delayed past SLA">Courier delayed past SLA</option>
+          </select>
+        </div>
+        <div class="pt-3 border-t border-slate-800 flex justify-end space-x-2">
+          <button type="button" onclick="closeModal('refundModal')" class="px-3 py-1.5 bg-slate-800 text-slate-300 rounded">Cancel</button>
+          <button type="submit" class="px-3.5 py-1.5 bg-rose-700 hover:bg-rose-600 text-white font-medium rounded">Authorize Refund</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <script>
+    let orders = [];
+    let deliveryPartners = [];
+    let paymentMethods = [];
+    let transactions = [];
+    let discounts = [];
+    let settings = {};
+    let currentFilter = 'all';
+    let currentCurrencySymbol = '₹';
+    let selectedOrder = null;
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('light')) {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        localStorage.setItem('theme_preference', 'dark');
+      } else {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        localStorage.setItem('theme_preference', 'light');
+      }
+    }
+
+    // Check URL parameters for Client View mode
+    function checkClientMode() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isClientPath = window.location.pathname.includes('client-view') || urlParams.has('access_key');
+      if (isClientPath) {
+        document.getElementById('clientBanner').classList.remove('hidden');
+      }
+      const savedTheme = localStorage.getItem('theme_preference');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+      }
+    }
+
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto px-4 py-2.5 rounded-lg shadow-lg text-xs font-medium border bg-slate-900 text-slate-100 border-slate-700`;
+      toast.innerText = message;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3200);
+    }
+
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      document.querySelectorAll('aside nav button').forEach(b => {
+        b.classList.remove('bg-slate-800', 'text-slate-200', 'border', 'border-slate-700');
+        b.classList.add('text-slate-400');
+      });
+      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-slate-800', 'text-slate-200', 'border', 'border-slate-700');
+        activeBtn.classList.remove('text-slate-400');
+      }
+    }
+
+    function formatMoney(amount) {
+      return `${currentCurrencySymbol}${Number(amount || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+    }
+
+    function changeCurrency(val) {
+      if (val === 'INR') currentCurrencySymbol = '₹';
+      else if (val === 'USD') currentCurrencySymbol = '$';
+      else if (val === 'EUR') currentCurrencySymbol = '€';
+      else if (val === 'GBP') currentCurrencySymbol = '£';
+      renderDashboard();
+    }
+
+    async function apiRequest(endpoint, method = 'GET', data = null) {
+      try {
+        const options = { method, headers: { 'Content-Type': 'application/json' } };
+        if (data && method !== 'GET') options.body = JSON.stringify(data);
+        const res = await fetch(endpoint, options);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } catch (err) {
+        console.warn(`API query ${endpoint}:`, err);
+        return null;
+      }
+    }
+
+    async function loadData() {
+      const [ordData, partnerData, pmData, txData, discData, setData] = await Promise.all([
+        apiRequest('/api/orders'),
+        apiRequest('/api/delivery-partners'),
+        apiRequest('/api/payment-methods'),
+        apiRequest('/api/transactions'),
+        apiRequest('/api/discounts'),
+        apiRequest('/api/settings')
+      ]);
+
+      if (ordData) orders = ordData;
+      if (partnerData) deliveryPartners = partnerData;
+      if (pmData) paymentMethods = pmData;
+      if (txData) transactions = txData;
+      if (discData) discounts = discData;
+      if (setData) settings = setData;
+
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      const paidOrders = orders.filter(o => ['paid', 'cod'].includes(o.payment_status));
+      const totalRev = paidOrders.reduce((sum, o) => sum + Number(o.total || 0), 0);
+      const totalRefunds = transactions.filter(t => t.transaction_type === 'refund' && t.status === 'success')
+                                       .reduce((sum, t) => sum + Number(t.amount || 0), 0);
+
+      document.getElementById('statTotalRevenue').innerText = formatMoney(totalRev);
+      document.getElementById('statTotalOrders').innerText = orders.length;
+      document.getElementById('statTotalRefunds').innerText = formatMoney(totalRefunds);
+
+      const unfulfilled = orders.filter(o => o.fulfillment_status === 'unfulfilled').length;
+      const inTransit = orders.filter(o => ['in_transit', 'out_for_delivery', 'pickup_scheduled'].includes(o.fulfillment_status)).length;
+      document.getElementById('statUnfulfilled').innerText = unfulfilled;
+      document.getElementById('statInTransit').innerText = inTransit;
+      document.getElementById('unfulfilledBadge').innerText = unfulfilled;
+      document.getElementById('inTransitBadge').innerText = inTransit;
+
+      // Overview partner list
+      const pContainer = document.getElementById('overviewPartnersList');
+      pContainer.innerHTML = '';
+      deliveryPartners.slice(0, 4).forEach(p => {
+        pContainer.innerHTML += `
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-300 font-medium">${p.name}</span>
+            <div class="flex items-center space-x-2 text-slate-400">
+              <span>${p.avg_days}</span>
+              <span class="text-slate-200 font-semibold">${p.rating} ★</span>
+            </div>
+          </div>
+        `;
+      });
+
+      // Overview action table
+      const actionTable = document.getElementById('overviewActionTable');
+      actionTable.innerHTML = '';
+      const unfulfilledOrders = orders.filter(o => o.fulfillment_status === 'unfulfilled');
+      if (unfulfilledOrders.length === 0) {
+        actionTable.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-slate-500">All WhatsApp orders have pickups scheduled.</td></tr>`;
+      } else {
+        unfulfilledOrders.forEach(o => {
+          actionTable.innerHTML += `
+            <tr class="hover:bg-slate-800/30 transition">
+              <td class="py-2.5 px-3 font-mono text-blue-400 font-semibold">${o.order_number}</td>
+              <td class="py-2.5 px-3 text-slate-200">${o.customer_name} <span class="text-slate-400 text-[11px] font-mono">(${o.customer_phone})</span></td>
+              <td class="py-2.5 px-3 text-slate-300">${o.shipping_city || 'City'}</td>
+              <td class="py-2.5 px-3 font-medium text-slate-100">${formatMoney(o.total)}</td>
+              <td class="py-2.5 px-3 text-slate-300">${o.payment_gateway}</td>
+              <td class="py-2.5 px-3 text-right">
+                <button onclick="promptBookPickup('${o.id}')" class="px-2.5 py-1 bg-blue-700 hover:bg-blue-600 text-white rounded font-medium text-xs">
+                  Book Pickup
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+
+      renderOrdersTable();
+      renderLogisticsView();
+      renderPaymentsView();
+      renderDiscountsView();
+    }
+
+    function filterOrders(status) {
+      currentFilter = status;
+      document.querySelectorAll('.order-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-status') === status) {
+          btn.className = 'order-filter-btn px-3 py-1.5 text-xs rounded-lg font-medium bg-slate-800 text-white border border-slate-700';
+        } else {
+          btn.className = 'order-filter-btn px-3 py-1.5 text-xs rounded-lg font-medium bg-transparent text-slate-400 hover:text-white';
+        }
+      });
+      renderOrdersTable();
+    }
+
+    function handleSearch(term) {
+      const q = term.toLowerCase().trim();
+      const rows = document.querySelectorAll('#ordersTableBody tr');
+      rows.forEach(r => {
+        r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    function renderOrdersTable() {
+      const tbody = document.getElementById('ordersTableBody');
+      tbody.innerHTML = '';
+
+      let filtered = orders;
+      if (currentFilter !== 'all') {
+        if (['unfulfilled', 'in_transit', 'out_for_delivery', 'delivered'].includes(currentFilter)) {
+          filtered = orders.filter(o => o.fulfillment_status === currentFilter);
+        } else if (currentFilter === 'refunded') {
+          filtered = orders.filter(o => o.payment_status === 'refunded' || o.fulfillment_status === 'cancelled');
+        }
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="py-6 text-center text-slate-500 text-xs">No orders match this filter.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(o => {
+        const isUnfulfilled = o.fulfillment_status === 'unfulfilled';
+        const cleanPhone = (o.customer_phone || '').replace(/[^0-9]/g, '');
+        const waLink = `https://wa.me/${cleanPhone}`;
+
+        tbody.innerHTML += `
+          <tr class="hover:bg-slate-800/40 transition cursor-pointer" onclick="viewOrderDetails('${o.id}')">
+            <td class="py-3 px-3.5 font-mono text-blue-400 font-semibold">${o.order_number}</td>
+            <td class="py-3 px-3.5">
+              <div class="font-medium text-slate-200">${o.customer_name}</div>
+              <div class="text-[11px] text-slate-400 font-mono">${o.customer_phone}</div>
+            </td>
+            <td class="py-3 px-3.5 text-slate-300">
+              <div>${(o.items || [])[0]?.title || 'Items'}</div>
+              <div class="text-[10px] text-slate-400">${(o.items || []).length} item(s)</div>
+            </td>
+            <td class="py-3 px-3.5">
+              <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-800 text-slate-300 border border-slate-700">
+                ${o.payment_gateway}
+              </span>
+              <div class="text-[10px] text-slate-400 mt-0.5">${o.payment_status.toUpperCase()}</div>
+            </td>
+            <td class="py-3 px-3.5">
+              <span class="px-2 py-0.5 rounded text-[10px] font-medium ${isUnfulfilled ? 'bg-amber-950/60 text-amber-300 border border-amber-800/40' : 'bg-slate-800 text-slate-200 border border-slate-700'}">
+                ${o.fulfillment_status.replace('_', ' ').toUpperCase()}
+              </span>
+            </td>
+            <td class="py-3 px-3.5">
+              ${o.delivery_partner_name ? `
+                <div class="text-slate-200 font-medium">${o.delivery_partner_name}</div>
+                <div class="text-[10px] font-mono text-slate-400">${o.tracking_number}</div>
+              ` : `
+                <span class="text-amber-400">Pickup Not Scheduled</span>
+              `}
+            </td>
+            <td class="py-3 px-3.5 font-medium text-slate-100">${formatMoney(o.total)}</td>
+            <td class="py-3 px-3.5 text-right" onclick="event.stopPropagation()">
+              <div class="flex items-center justify-end space-x-1.5">
+                ${isUnfulfilled ? `
+                  <button onclick="promptBookPickup('${o.id}')" class="px-2.5 py-1 bg-blue-700 hover:bg-blue-600 text-white rounded font-medium text-xs">
+                    Book Pickup
+                  </button>
+                ` : `
+                  <a href="${waLink}" target="_blank" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 text-xs">
+                    WhatsApp
+                  </a>
+                  <button onclick="viewOrderDetails('${o.id}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 text-xs">
+                    Details
+                  </button>
+                `}
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function renderLogisticsView() {
+      const pGrid = document.getElementById('deliveryPartnersGrid');
+      pGrid.innerHTML = '';
+      deliveryPartners.forEach(p => {
+        pGrid.innerHTML += `
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4 shadow-sm text-xs space-y-2">
+            <div class="flex justify-between items-start">
+              <h4 class="font-semibold text-slate-200 text-sm">${p.name}</h4>
+              <span class="font-medium text-slate-300">${p.rating} ★</span>
+            </div>
+            <p class="text-slate-400">${p.service_type} &bull; ${p.avg_days}</p>
+            <div class="pt-2 border-t border-[var(--border-color)] flex justify-between text-slate-400 text-[11px]">
+              <span>Code: <b class="text-slate-200 font-mono">${p.code}</b></span>
+              <span>Waybills: <b class="text-slate-200">${p.total_shipments || 0}</b></span>
+            </div>
+          </div>
+        `;
+      });
+
+      const sContainer = document.getElementById('activeShipmentsList');
+      sContainer.innerHTML = '';
+      const enRoute = orders.filter(o => ['in_transit', 'out_for_delivery', 'pickup_scheduled'].includes(o.fulfillment_status));
+      if (enRoute.length === 0) {
+        sContainer.innerHTML = `<div class="p-4 text-center text-slate-500 text-xs">No active shipments in transit right now.</div>`;
+        return;
+      }
+
+      enRoute.forEach(o => {
+        sContainer.innerHTML += `
+          <div class="p-3.5 rounded-lg bg-slate-900/60 border border-[var(--border-color)] flex items-center justify-between text-xs">
+            <div>
+              <span class="font-mono text-blue-400 font-semibold">${o.order_number}</span>
+              <span class="text-slate-200 ml-2 font-medium">${o.customer_name}</span>
+              <span class="text-slate-400 text-[11px] ml-1">(${o.shipping_city})</span>
+              <div class="text-slate-400 text-[11px] mt-0.5">Carrier: <b class="text-slate-300">${o.delivery_partner_name}</b> | AWB: <b class="font-mono text-slate-300">${o.tracking_number}</b></div>
+            </div>
+            <button onclick="viewOrderDetails('${o.id}')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 text-xs">
+              View Milestones &rarr;
+            </button>
+          </div>
+        `;
+      });
+    }
+
+    function renderPaymentsView() {
+      const pmGrid = document.getElementById('paymentMethodsGrid');
+      pmGrid.innerHTML = '';
+      paymentMethods.forEach(pm => {
+        pmGrid.innerHTML += `
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4 shadow-sm text-xs space-y-1.5">
+            <h4 class="font-semibold text-slate-200 text-sm">${pm.name}</h4>
+            <p class="text-slate-400">Provider: ${pm.provider}</p>
+            ${pm.upi_id ? `<p class="font-mono text-slate-300 bg-slate-950 p-1.5 rounded border border-slate-800 text-[11px]">VPA: ${pm.upi_id}</p>` : ''}
+          </div>
+        `;
+      });
+
+      const tBody = document.getElementById('transactionsTableBody');
+      tBody.innerHTML = '';
+      document.getElementById('txCountDisplay').innerText = `${transactions.length} records`;
+
+      transactions.forEach(t => {
+        const isRefund = t.transaction_type === 'refund';
+        tBody.innerHTML += `
+          <tr class="hover:bg-slate-800/30 transition">
+            <td class="py-2.5 px-3 font-mono text-slate-400 text-[11px]">${t.reference_id}</td>
+            <td class="py-2.5 px-3 font-mono text-blue-400 font-medium">${t.order_number || '#WA-xxxx'}</td>
+            <td class="py-2.5 px-3 text-slate-200">${t.customer_name || 'Customer'}</td>
+            <td class="py-2.5 px-3">
+              <span class="px-2 py-0.5 rounded text-[10px] font-medium ${isRefund ? 'bg-rose-950 text-rose-300' : 'bg-slate-800 text-slate-200'}">
+                ${t.transaction_type.toUpperCase()}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 text-slate-300">${t.gateway}</td>
+            <td class="py-2.5 px-3 font-semibold ${isRefund ? 'text-rose-400' : 'text-slate-100'}">
+              ${isRefund ? '-' : '+'}${formatMoney(t.amount)}
+            </td>
+            <td class="py-2.5 px-3 text-slate-400 truncate max-w-[160px]">${t.reason || 'Payment'}</td>
+            <td class="py-2.5 px-3 text-slate-400 text-[11px]">${t.created_at || 'Recent'}</td>
+          </tr>
+        `;
+      });
+    }
+
+    function renderDiscountsView() {
+      const dGrid = document.getElementById('discountsGrid');
+      dGrid.innerHTML = '';
+      discounts.forEach(d => {
+        dGrid.innerHTML += `
+          <div class="bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4 shadow-sm text-xs space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="font-mono font-semibold px-2 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700">${d.code}</span>
+              <span class="text-emerald-500 font-medium">Active</span>
+            </div>
+            <p class="text-base font-bold text-white">${d.discount_type === 'percentage' ? `${d.value}% OFF` : `${formatMoney(d.value)} OFF`}</p>
+            <p class="text-slate-400 text-[11px]">Min purchase: ${formatMoney(d.min_order)}</p>
+          </div>
+        `;
+      });
+    }
+
+    // Modal Actions
+    function promptBookPickup(orderId) {
+      document.getElementById('pickupOrderId').value = orderId;
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        document.getElementById('pickupOrderNum').innerText = order.order_number;
+        document.getElementById('pickupCustName').innerText = `${order.customer_name} (${order.customer_phone})`;
+      }
+      const select = document.getElementById('pickupPartnerSelect');
+      select.innerHTML = '';
+      deliveryPartners.forEach(p => {
+        select.innerHTML += `<option value="${p.id}">${p.name} (${p.avg_days})</option>`;
+      });
+      openModal('bookPickupModal');
+    }
+
+    async function handleBookPickupSubmit(e) {
+      e.preventDefault();
+      const orderId = document.getElementById('pickupOrderId').value;
+      const partnerId = document.getElementById('pickupPartnerSelect').value;
+      const slot = document.getElementById('pickupSlotSelect').value;
+
+      const res = await apiRequest('/api/logistics/book-pickup', 'POST', {
+        order_id: orderId,
+        partner_id: partnerId,
+        pickup_slot: slot
+      });
+
+      showToast(res ? res.message : 'Courier pickup booked!');
+      closeModal('bookPickupModal');
+      await loadData();
+      viewOrderDetails(orderId);
+    }
+
+    async function handleWhatsappIntakeSubmit(e) {
+      e.preventDefault();
+      const rawText = document.getElementById('waRawInput').value.trim();
+      const custName = document.getElementById('waNameInput').value.trim();
+      const custPhone = document.getElementById('waPhoneInput').value.trim();
+      const prodPrice = parseFloat(document.getElementById('waProductSelect').value);
+      const prodName = document.getElementById('waProductSelect').selectedOptions[0].text.split('(')[0].trim();
+      const paymentMode = document.getElementById('waPaymentMode').value;
+
+      const body = {
+        raw_text: rawText,
+        customer_name: custName,
+        phone: custPhone,
+        payment_mode: paymentMode,
+        payment_status: paymentMode.includes('COD') ? 'cod' : 'paid',
+        items: [{ title: prodName, sku: 'WA-SKU-01', price: prodPrice, qty: 1, image: '📦' }]
+      };
+
+      const res = await apiRequest('/api/orders/from-whatsapp', 'POST', body);
+      showToast(res ? res.message : 'Order saved!');
+      closeModal('whatsappIntakeModal');
+      await loadData();
+      if (res && res.id) promptBookPickup(res.id);
+    }
+
+    async function viewOrderDetails(orderId) {
+      const res = await apiRequest(`/api/orders/${orderId}`);
+      selectedOrder = (res && !res.error) ? res : orders.find(o => o.id === orderId);
+      if (!selectedOrder) return;
+
+      document.getElementById('modalOrderNumber').innerText = selectedOrder.order_number;
+      document.getElementById('modalOrderDate').innerText = `Created on ${selectedOrder.created_at || 'Recently'}`;
+      document.getElementById('modalWaPhoneDisplay').innerText = selectedOrder.customer_phone;
+      document.getElementById('modalCustomerName').innerText = selectedOrder.customer_name;
+      document.getElementById('modalCustomerAddress').innerText = `${selectedOrder.shipping_address || ''}, ${selectedOrder.shipping_city || ''}`;
+      document.getElementById('modalTotal').innerText = formatMoney(selectedOrder.total);
+
+      document.getElementById('modalCarrierName').innerText = selectedOrder.delivery_partner_name || 'Pickup Not Scheduled';
+      document.getElementById('modalTrackingNumber').innerText = selectedOrder.tracking_number || 'Awaiting Pickup';
+      document.getElementById('modalEstimatedDelivery').innerText = selectedOrder.estimated_delivery || 'Calculating';
+
+      const cleanPhone = (selectedOrder.customer_phone || '').replace(/[^0-9]/g, '');
+      document.getElementById('modalDirectWaLink').href = `https://wa.me/${cleanPhone}`;
+
+      const cActions = document.getElementById('modalCarrierActionButtons');
+      if (selectedOrder.fulfillment_status === 'unfulfilled') {
+        cActions.innerHTML = `
+          <button onclick="promptBookPickup('${selectedOrder.id}')" class="w-full py-2 bg-blue-700 hover:bg-blue-600 text-white font-medium rounded text-xs">
+            Schedule Courier Doorstep Pickup
+          </button>
+        `;
+      } else {
+        cActions.innerHTML = `
+          <button onclick="promptAdvanceStatus('${selectedOrder.id}')" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded border border-slate-700 text-xs">
+            Advance Tracking Checkpoint &rarr;
+          </button>
+        `;
+      }
+
+      openModal('orderDetailModal');
+    }
+
+    async function promptAdvanceStatus(orderId) {
+      const order = orders.find(o => o.id === orderId) || selectedOrder;
+      if (!order) return;
+
+      let nextStatus = 'delivered';
+      let loc = `${order.shipping_city} Customer Doorstep`;
+      let desc = 'Delivered by courier agent.';
+
+      if (order.fulfillment_status === 'pickup_scheduled') {
+        nextStatus = 'in_transit';
+        loc = 'Central Sorting Facility';
+        desc = 'Courier collected package from merchant warehouse.';
+      } else if (order.fulfillment_status === 'in_transit') {
+        nextStatus = 'out_for_delivery';
+        loc = `${order.shipping_city} Delivery Hub`;
+        desc = 'Out for delivery with courier rider.';
+      }
+
+      await apiRequest('/api/logistics/update-status', 'POST', {
+        order_id: orderId,
+        status: nextStatus,
+        location: loc,
+        description: desc
+      });
+
+      showToast(`Status updated to ${nextStatus.replace('_', ' ')}`);
+      await loadData();
+      if (selectedOrder && selectedOrder.id === orderId) viewOrderDetails(orderId);
+    }
+
+    function openRefundModalForSelection() {
+      populateRefundOrderDropdown();
+      openModal('refundModal');
+    }
+
+    function promptRefundFromOrder() {
+      if (selectedOrder) {
+        closeModal('orderDetailModal');
+        populateRefundOrderDropdown(selectedOrder.id);
+        openModal('refundModal');
+      }
+    }
+
+    function populateRefundOrderDropdown(selectedId = null) {
+      const select = document.getElementById('refundOrderSelect');
+      select.innerHTML = '<option value="">-- Choose Order to Refund --</option>';
+      orders.forEach(o => {
+        select.innerHTML += `<option value="${o.id}" ${selectedId === o.id ? 'selected' : ''}>${o.order_number} - ${o.customer_name} (${formatMoney(o.total)})</option>`;
+      });
+      if (selectedId) updateRefundOrderPreview(selectedId);
+      else if (orders.length > 0) updateRefundOrderPreview(orders[0].id);
+    }
+
+    function updateRefundOrderPreview(orderId) {
+      const o = orders.find(x => x.id === orderId);
+      if (o) document.getElementById('refundAmountInput').value = o.total;
+    }
+
+    function toggleRefundAmountInput(val) {
+      const input = document.getElementById('refundAmountInput');
+      input.disabled = (val !== 'partial');
+      if (val !== 'partial') {
+        const o = orders.find(x => x.id === document.getElementById('refundOrderSelect').value);
+        if (o) input.value = o.total;
+      }
+    }
+
+    async function handleRefundSubmit(e) {
+      e.preventDefault();
+      const orderId = document.getElementById('refundOrderSelect').value;
+      const amount = parseFloat(document.getElementById('refundAmountInput').value);
+      const reason = document.getElementById('refundReasonSelect').value;
+
+      await apiRequest('/api/orders/refund', 'POST', {
+        order_id: orderId,
+        type: document.getElementById('refundTypeSelect').value,
+        amount: amount,
+        reason: reason
+      });
+
+      showToast(`Refund of ₹${amount.toFixed(2)} processed.`);
+      closeModal('refundModal');
+      await loadData();
+    }
+
+    // Client Link Copy & Standalone Download
+    function copyClientLink() {
+      const link = document.getElementById('shareableLinkInput');
+      link.select();
+      navigator.clipboard.writeText(link.value);
+      showToast('Client presentation link copied to clipboard!');
+    }
+
+    function downloadClientHtml() {
+      const htmlContent = document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Aura_Client_Showcase.html';
+      a.click();
+      showToast('Downloaded Aura_Client_Showcase.html! You can send this directly to your client.');
+    }
+
+    function exportOrdersCSV() {
+      let csv = 'Order Number,Customer Name,Phone,City,Payment Status,Payment Mode,Fulfillment Status,Courier,AWB,Total\n';
+      orders.forEach(o => {
+        csv += `"${o.order_number}","${o.customer_name}","${o.customer_phone || ''}","${o.shipping_city || ''}","${o.payment_status}","${o.payment_gateway || ''}","${o.fulfillment_status}","${o.delivery_partner_name || ''}","${o.tracking_number || ''}","${o.total}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `orders_${new Date().toISOString().substring(0, 10)}.csv`;
+      a.click();
+      showToast('Exported CSV successfully!');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      checkClientMode();
+      loadData();
+    });
+  </script>
+</body>
+</html>
